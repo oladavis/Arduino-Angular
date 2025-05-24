@@ -1,34 +1,93 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
-  <h1>Welcome to {{ title }}!</h1>
-  
-</div>
-<div>
-  <button (click)="connect()">Connect</button>
-</div>
-<div>
-  <button (click)="closeSocket()">Close</button>
-</div>
-<div>
-  <button (click)="sendGame(1)">Send Game 1</button>
-</div>
-<h1>
-  Serial output
-</h1>
-<div *ngFor="let item of getArray()">
-  {{ item }}
+  <h1 class="mat-h1">{{ title }}</h1>
 </div>
 
+<div class="button-container">
+  <mat-card>
+    <mat-card-title>Controls</mat-card-title>
+    <mat-form-field appearance="outline" [hideRequiredMarker]="true">
+      <mat-label>Websocket Address</mat-label>
+      <input
+        [disabled]="wsStatus === 'open'"
+        type="text"
+        matInput
+        placeholder="Enter websocket address"
+        value="{{ wsAddress }}"
+        (input)="wsAddress = $event.target.value"
+      />
+    </mat-form-field>
+    <div>
+      Connection status:
+      <span *ngIf="wsStatus === 'open'" class="green-text">
+        <mat-icon class="green-text">done</mat-icon>
+        {{ wsStatus }}
+      </span>
+      <span *ngIf="wsStatus !== 'open'" class="red-text">
+        <mat-icon class="red-text">close</mat-icon>
+        {{ wsStatus }}
+      </span>
+    </div>
+    <mat-card-actions>
+      <mat-grid-list cols="2" rowHeight="100px">
+        <mat-grid-tile>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="connect()"
+            [disabled]="wsStatus === 'open'"
+          >
+            Connect
+          </button>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="closeSocket()"
+            [disabled]="wsStatus === 'closed'"
+          >
+            Close
+          </button>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-actions>
+  </mat-card>
+</div>
 
-<!-- <h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul> -->
+<mat-card>
+  <mat-grid-list cols="1" rowHeight="100px">
+    <mat-grid-tile>
+      <mat-form-field appearance="outline" [hideRequiredMarker]="true">
+        <mat-label>Data to send</mat-label>
+        <textarea
+          [disabled]="wsStatus === 'closed'"
+          type="text"
+          matInput
+          placeholder="Enter data to send"
+          value="{{ data }}"
+          (input)="data = $event.target.value"
+        ></textarea>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <button
+        [disabled]="wsStatus === 'closed'"
+        mat-raised-button
+        color="primary"
+        (click)="sendData()"
+      >
+        Send
+      </button>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>
+    Received data
+  </mat-card-title>
+  <div *ngFor="let item of getArray()">
+    {{ item }}
+  </div>
+</mat-card>

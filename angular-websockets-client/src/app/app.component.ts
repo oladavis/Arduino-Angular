@@ -1,47 +1,74 @@
 import { Component } from '@angular/core';
 let i = [];
+let component;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent {
-  title = 'angular-websockets-client';
-  i = [];
+  title = 'Angular Websocket Client';
+  wsAddress = "ws://localhost:8081";
   socket;
+  data = "Hi from Angular!";
+
+  wsStatus = "closed";
+
   constructor() {
-    // this.i = [];
+    component = this;
     console.log("We are in constructor");
-    console.log('this.i: ', JSON.stringify(this.i));
     this.connect();
   }
 
   connect() {
+    i=[];
     // The socket connection needs two event listeners:
-    this.socket = new WebSocket("ws://localhost:8081");
+    try {
+      this.socket = new WebSocket(this.wsAddress);
+      this.socket.onopen = this.openSocket(this);
 
-    this.socket.onopen = this.openSocket;
-    this.socket.onmessage = this.showData;
-    // this.socket.onclose = this.closeSocket;
+      this.socket.onerror = this.errorSocket;
+      this.socket.onmessage = this.showData;
+
+    } catch (error) {
+      console.log("Error in creating socket: ", JSON.stringify(error));
+      alert("Error in creating socket: " + error);
+    }
   }
 
-  openSocket() {
-    // this.text.html("Socket open");
-    // this.socket.send("Hello server");
+  openSocket(component) {
+    console.log("Socket opened!");
+    component.wsStatus = "open";
+    console.log('this.wsStatus: ', JSON.stringify(this.wsStatus));
   }
-  closeSocket(){
+
+  errorSocket(error) {
+    console.log("Error in creating the socket: " + JSON.stringify(error));
+    alert("Error in creating the socket");
+    component.wsStatus = 'closed';
+
+  }
+
+  closeSocket() {
     console.log("Closing socket")
     this.socket.close();
+    this.wsStatus = "closed";
   }
 
+  /**
+   * Handles receive of websocket data
+   * @param result object
+   */
   showData(result: any) {
-    let str2 = result.data.replace(/(\\r\\n|\\n|\\r)/gm, "");
-    console.log('str2: ', JSON.stringify(str2));
+    // Remove new line characters
+    let msg = result.data.replace(/(\\r\\n|\\n|\\r)/gm, "");
+    console.log('received: ', JSON.stringify(msg));
     if (i) {
-      i.push(str2);
+      i.push(msg);
     }
 
-    console.log('this.i: ', JSON.stringify(i));
+    // console.log('this.i: ', JSON.stringify(i));
 
     if (i.length > 20) {
       i.shift();
@@ -51,6 +78,12 @@ export class AppComponent {
 
   getArray() {
     return i;
+  }
+
+
+  sendData() {
+    console.log("Sending data: ", this.data);
+    this.socket.send(this.data);
   }
 
   sendGame(n: number) {

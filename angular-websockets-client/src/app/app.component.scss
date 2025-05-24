@@ -1,0 +1,25 @@
+.container {
+  align-items: center;
+  display: flex;
+  // flex-direction: column;
+  justify-content: center;
+  // height: 500px;
+  width: 100%;
+}
+
+.button-container {
+  // width: 80%;
+  // text-align: center;
+}
+
+mat-form-field {
+  width: 80%;
+}
+
+.green-text {
+  color: green;
+}
+
+.red-text {
+  color: red;
+}
