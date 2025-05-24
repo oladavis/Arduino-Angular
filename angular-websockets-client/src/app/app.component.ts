@@ -8,28 +8,30 @@ let i = [];
 export class AppComponent {
   title = 'angular-websockets-client';
   i = [];
+  socket;
   constructor() {
     // this.i = [];
     console.log("We are in constructor");
     console.log('this.i: ', JSON.stringify(this.i));
-    this.setup();
+    this.connect();
   }
 
-  socket = new WebSocket("ws://localhost:8081");
-
-  setup() {
+  connect() {
     // The socket connection needs two event listeners:
+    this.socket = new WebSocket("ws://localhost:8081");
+
     this.socket.onopen = this.openSocket;
     this.socket.onmessage = this.showData;
-
-    // make a new div and position it at 10, 10:
-    // this.text = createDiv("Sensor reading:");
-    // this.text.position(10, 10);
+    // this.socket.onclose = this.closeSocket;
   }
 
   openSocket() {
     // this.text.html("Socket open");
     // this.socket.send("Hello server");
+  }
+  closeSocket(){
+    console.log("Closing socket")
+    this.socket.close();
   }
 
   showData(result: any) {
@@ -44,11 +46,7 @@ export class AppComponent {
     if (i.length > 20) {
       i.shift();
     }
-    // console.log('i: ', JSON.stringify(this.i));
-    // when the server returns, show the result in the div:
-    // text.html("Sensor reading:" + i);
-    // xPos = int(result.data); // convert result to an integer
-    // text.position(xPos, 10); // position the text
+
   }
 
   getArray() {
@@ -73,4 +71,6 @@ export class AppComponent {
 
     // }
   }
+
+
 }
