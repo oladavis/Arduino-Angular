@@ -1,35 +1,36 @@
+/*
+* Serial port demo
+* By: Ari Saif
+*/
 #include <string.h>
 //---------------------------------------
-
-void setup()
-{
-  Serial.begin(9600);
-}
 int i = 0;
 int incomingByte = 0; // for incoming serial data
 const int frameSize = 6;
 String frames[frameSize] = {".", "..", "...", "..", ".", ""};
+unsigned long prevTime = 0;
+
+void setup()
+{
+  Serial.begin(9600);
+  prevTime = millis();
+}
+
+
 
 void loop()
 {
 
-  Serial.println("Arduiono: (" + String(i++) + "): Listening for commands" +
-                 frames[i % frameSize]);
+  if (millis() - prevTime > 1000) {
+    Serial.println("Arduiono: (" + String(i++) + "): Listening for commands" +
+                   frames[i % frameSize]
+                  );
+    prevTime = millis();
+  }
+
   if (Serial.available() > 0)
   {
     String s = Serial.readString();
-    Serial.print("I received: " + s + "\n");
-
-    // Returns first token
-    char *token = strtok((char *)s.c_str(), ",");
-
-    // Keep printing tokens while one of the
-    // delimiters present in str[].
-    while (token != NULL)
-    {
-      Serial.print("token: " + String(token) + "\n");
-      token = strtok(NULL, ",");
-    }
+    Serial.print("Arduiono: received: " + s + "\n");
   }
-   delay(1000);
 }

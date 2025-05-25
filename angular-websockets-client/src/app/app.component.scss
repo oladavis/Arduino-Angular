@@ -8,8 +8,10 @@
 }
 
 .button-container {
+  margin-top: 20px;
+
   // width: 80%;
-  // text-align: center;
+  text-align: center;
 }
 
 mat-form-field {
@@ -21,5 +23,16 @@ mat-form-field {
 }
 
 .red-text {
-  color: red;
+  color: indianred;
+}
+.green{
+  background-color:green;
+}
+
+.red{
+  background-color:indianred;
+}
+
+.connect-button{
+  width: 150px;
 }

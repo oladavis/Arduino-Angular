@@ -1,5 +1,10 @@
+/**
+ * Angular web socket client
+ * By: Ari Saif
+ */
+
 import { Component } from '@angular/core';
-let i = [];
+let msgArray = [];
 let component;
 @Component({
   selector: 'app-root',
@@ -10,10 +15,11 @@ let component;
 export class AppComponent {
   title = 'Angular Websocket Client';
   wsAddress = "ws://localhost:8081";
-  socket;
+  socket :any;
   data = "Hi from Angular!";
 
-  wsStatus = "closed";
+  wsStatus = "disconnected";
+  sendButtonEnable = true;
 
   constructor() {
     component = this;
@@ -21,8 +27,11 @@ export class AppComponent {
     this.connect();
   }
 
+  /**
+   * Connects through websocket
+   */
   connect() {
-    i=[];
+    msgArray = [];
     // The socket connection needs two event listeners:
     try {
       this.socket = new WebSocket(this.wsAddress);
@@ -39,7 +48,7 @@ export class AppComponent {
 
   openSocket(component) {
     console.log("Socket opened!");
-    component.wsStatus = "open";
+    component.wsStatus = "connected";
     console.log('this.wsStatus: ', JSON.stringify(this.wsStatus));
   }
 
@@ -53,7 +62,7 @@ export class AppComponent {
   closeSocket() {
     console.log("Closing socket")
     this.socket.close();
-    this.wsStatus = "closed";
+    this.wsStatus = "disconnected";
   }
 
   /**
@@ -64,46 +73,31 @@ export class AppComponent {
     // Remove new line characters
     let msg = result.data.replace(/(\\r\\n|\\n|\\r)/gm, "");
     console.log('received: ', JSON.stringify(msg));
-    if (i) {
-      i.push(msg);
+    if (msgArray) {
+      msgArray = [msg].concat(msgArray);
     }
 
-    // console.log('this.i: ', JSON.stringify(i));
+    // console.log('this.msgArray: ', JSON.stringify(msgArray));
 
-    if (i.length > 20) {
-      i.shift();
+    if (msgArray.length > 20) {
+      msgArray.pop();
     }
 
   }
 
-  getArray() {
-    return i;
+  getMsgArray() {
+    return msgArray;
   }
 
 
-  sendData() {
+  /**
+   * Send data to websocket
+   */
+  async sendData() {
+    this.sendButtonEnable = false;
     console.log("Sending data: ", this.data);
-    this.socket.send(this.data);
+    await this.socket.send(this.data);
+    this.sendButtonEnable = true;
   }
-
-  sendGame(n: number) {
-    // ledNumber, pushButtonNumber, Duration, Blocking
-    // let game1 = 
-    // [[1, 1, 100, false],
-    // [2, 1, 100, false],
-    // [3, 1, 100, false]];
-
-    let game1 =
-      [1, 1, 100, 0];
-
-    // [[1,2], [3,4], [5, 6]]
-    console.log('game1: ', JSON.stringify(game1));
-    this.socket.send(game1.join(','));
-    // for(let e of game1){
-    //   this.socket.send(e.toString());
-
-    // }
-  }
-
 
 }

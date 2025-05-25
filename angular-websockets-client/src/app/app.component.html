@@ -1,4 +1,3 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1 class="mat-h1">{{ title }}</h1>
 </div>
@@ -9,7 +8,7 @@
     <mat-form-field appearance="outline" [hideRequiredMarker]="true">
       <mat-label>Websocket Address</mat-label>
       <input
-        [disabled]="wsStatus === 'open'"
+        [disabled]="wsStatus === 'connected'"
         type="text"
         matInput
         placeholder="Enter websocket address"
@@ -19,49 +18,46 @@
     </mat-form-field>
     <div>
       Connection status:
-      <span *ngIf="wsStatus === 'open'" class="green-text">
+      <span *ngIf="wsStatus === 'connected'" class="green-text">
         <mat-icon class="green-text">done</mat-icon>
         {{ wsStatus }}
       </span>
-      <span *ngIf="wsStatus !== 'open'" class="red-text">
+      <span *ngIf="wsStatus !== 'connected'" class="red-text">
         <mat-icon class="red-text">close</mat-icon>
         {{ wsStatus }}
       </span>
     </div>
-    <mat-card-actions>
-      <mat-grid-list cols="2" rowHeight="100px">
-        <mat-grid-tile>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="connect()"
-            [disabled]="wsStatus === 'open'"
-          >
-            Connect
-          </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="closeSocket()"
-            [disabled]="wsStatus === 'closed'"
-          >
-            Close
-          </button>
-        </mat-grid-tile>
-      </mat-grid-list>
-    </mat-card-actions>
+    <div class="button-container">
+      <button
+        class="connect-button green"
+        mat-raised-button
+        color="primary"
+        (click)="connect()"
+        *ngIf="wsStatus !== 'connected'"
+      >
+        Connect
+      </button>
+
+      <button
+        class="connect-button red"
+        mat-raised-button
+        color="primary"
+        (click)="closeSocket()"
+        *ngIf="wsStatus !== 'disconnected'"
+      >
+        Disconnect
+      </button>
+    </div>
   </mat-card>
 </div>
 
 <mat-card>
-  <mat-grid-list cols="1" rowHeight="100px">
-    <mat-grid-tile>
+  <mat-grid-list cols="1" rowHeight="50px">
+    <mat-grid-tile [rowspan]="2">
       <mat-form-field appearance="outline" [hideRequiredMarker]="true">
         <mat-label>Data to send</mat-label>
         <textarea
-          [disabled]="wsStatus === 'closed'"
+          [disabled]="wsStatus === 'disconnected'"
           type="text"
           matInput
           placeholder="Enter data to send"
@@ -70,12 +66,13 @@
         ></textarea>
       </mat-form-field>
     </mat-grid-tile>
-    <mat-grid-tile>
+    <mat-grid-tile height="80px" [rowspan]="1">
       <button
-        [disabled]="wsStatus === 'closed'"
+        [disabled]="wsStatus === 'disconnected' || sendButtonEnable === false"
         mat-raised-button
         color="primary"
         (click)="sendData()"
+        class="green"
       >
         Send
       </button>
@@ -87,7 +84,7 @@
   <mat-card-title>
     Received data
   </mat-card-title>
-  <div *ngFor="let item of getArray()">
+  <div *ngFor="let item of getMsgArray()" class="green-text">
     {{ item }}
   </div>
 </mat-card>
