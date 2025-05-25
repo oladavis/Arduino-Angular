@@ -1,6 +1,6 @@
 {
   "name": "serial-websocket",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Connects serial port to websocket",
   "main": "simple.js",
   "scripts": {
@@ -14,6 +14,7 @@
     "log-with-statusbar": "^1.1.18",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.3.2",
+    "mri": "^1.1.4",
     "numeral": "^2.0.6",
     "serialport": "^7.1.5",
     "ws": "^7.1.1"

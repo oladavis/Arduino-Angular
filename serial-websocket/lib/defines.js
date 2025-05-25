@@ -2,10 +2,8 @@ require("ansicolor").nice;
 
 var Globals = {
   options: {
-    serialPort: {
-      name: "/dev/cu.usbmodem142301",
-      rate: 9600
-    },
+    serialPortName: "/dev/cu.usbmodem142301",
+    serialPortRate: 9600,
     webSocketPortNumber: 8081,
     enable: true,
     serialConnectRetryIntervalInSeconds:5,

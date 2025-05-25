@@ -41,13 +41,13 @@ function devicePortInit() {
   log.info(
     `Initializing serial port: `,
     `Name:`.green,
-    ` ${Globals.options.serialPort.name}, `,
+    ` ${Globals.options.serialPortName}, `,
     `Baud Rate:`.green,
-    ` ${Globals.options.serialPort.rate}`
+    ` ${Globals.options.serialPortRate}`
   );
   devicePort = new SerialPort(
-    Globals.options.serialPort.name,
-    Globals.options.serialPort.rate
+    Globals.options.serialPortName,
+    Globals.options.serialPortRate
   );
   devicePort.pipe(parser);
 
@@ -208,7 +208,7 @@ function updateStatusBar() {
     serialPortStatusText +=
       `open`.green +
       ` Baud Rate: ` +
-      Globals.options.serialPort.rate.toString().green +
+      Globals.options.serialPortRate.toString().green +
       `, Read: ` +
       numeral(Globals.serialPortReadBytes)
         .format("0 a")
