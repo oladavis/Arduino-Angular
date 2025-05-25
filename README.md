@@ -10,3 +10,24 @@ This project consists of three parts:
 The arduino firmware and Node server should run on the same device. The Angular client can run on any web device that can connect to the Node server through network.
 
 
+![Screenshot](https://raw.githubusercontent.com/ourarash/serial-websocket/master/screenshot.gif)
+
+
+#Installation
+
+## Node server:
+```bash
+git clone https://github.com/ourarash/arduino-node-angular.git
+cd arduino-node-angular/serial-websocket/
+npm install
+node examples/simple.js
+```
+
+## Angular client:
+```bash
+git clone https://github.com/ourarash/arduino-node-angular.git
+cd arduino-node-angular/angular-websockets-client
+npm install
+ng serve
+```
+

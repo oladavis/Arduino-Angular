@@ -2,7 +2,7 @@
   "name": "serial-websocket",
   "version": "1.0.0",
   "description": "Connects serial port to websocket",
-  "main": "index.js",
+  "main": "simple.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -14,14 +14,15 @@ A bidirectional websocket to serial port server bridge. It can be used to send/r
 [downloadst-image]: https://img.shields.io/npm/dt/serial-websocket.svg
 [downloads-url]: https://npmjs.org/package/serial-websocket
 
+
+![Screenshot](https://raw.githubusercontent.com/ourarash/serial-websocket/master/screenshot.gif)
+
 #Installation
 ```bash
 npm install serial-websocket --save
 ```
 
-
 # Usage
-
 ```javascript
 let options = {
   serialPort: {
