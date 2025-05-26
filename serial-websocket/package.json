@@ -1,6 +1,6 @@
 {
   "name": "serial-websocket",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Connects serial port to websocket",
   "main": "simple.js",
   "scripts": {

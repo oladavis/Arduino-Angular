@@ -16,8 +16,6 @@ void setup()
   prevTime = millis();
 }
 
-
-
 void loop()
 {
 
